@@ -13,7 +13,7 @@ Refer to the official [ZED X One getting started guide](https://www.stereolabs.c
 Open a terminal (`Ctrl+Alt+t`) and clone this repository
 
 ```
-git clone https://github.com/stereolabs/zedx-one-capture.git
+git clone https://github.com/Blake-James/zedx-one-capture.git
 ```
 
 Build and install the C++ library in the `lib` folder
