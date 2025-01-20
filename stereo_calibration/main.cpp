@@ -15,13 +15,13 @@
 
 // CHANGE THIS PARAM BASED ON THE CHECKERBOARD USED
 // https://docs.opencv.org/4.x/da/d0d/tutorial_camera_calibration_pattern.html
-int target_w = 9; // number of horizontal inner edges
-int target_h = 6; // number of vertical inner edges
-float square_size = 25.0; // mm
+int target_w = 18; // number of horizontal inner edges
+int target_h = 12; // number of vertical inner edges
+float square_size = 19.42; // mm
 
 std::string folder = "/tmp/zed-one/image/";
 std::string output_filename = "SN_ZEDONES.conf";
-int MIN_IMAGE = 5;
+int MIN_IMAGE = 30;
 int verbose = 0;
 
 namespace fs = std::filesystem;
@@ -312,7 +312,8 @@ int main(int argc, char *argv[]) {
                         cov_left = CheckCoverage(pts_detected, cv::Size(camera_0.getWidth(), camera_0.getHeight()));
                         pts_obj_tot.push_back(pts_obj_);
                         std::cout << "coverage : " << (1-cov_left)*100 << "%" << std::endl;
-                        if (cov_left < 0.1) {
+                        // if (cov_left < 0.1) {
+                        if (pts_detected.size() >= MIN_IMAGE) { // Wait until at least MIN_IMAGE images are collected
                             cv::Mat rvec(1, 3, CV_64FC1);
                             cv::Mat tvec(1, 3, CV_64FC1);
                             float err = cv::calibrateCamera(pts_obj_tot, pts_detected, cv::Size(camera_0.getWidth(), camera_0.getHeight()), K_left, D_left, r_left, t_left, 0,
@@ -334,6 +335,8 @@ int main(int argc, char *argv[]) {
                             checker.d_max = checker.d_min;
 
                             angle_clb = true;
+                        } else {
+                            std::cout << "Waiting for more images... (" << pts_detected.size() << "/" << MIN_IMAGE << ")" << std::endl;
                         }
                     } else {
                         cv::Mat rvec(1, 3, CV_64FC1);
