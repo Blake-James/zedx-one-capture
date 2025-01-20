@@ -29,13 +29,13 @@ sudo ldconfig
 Compile the sample
 
 ```
-cd ../sample_mono/
+cd ../../stereo_calibration
 mkdir build; cd build; cmake ..
 make
 ```
 
-Run the sample
+Run calibration
 
 ```
-./argus_camera
+./zedx_one_stereo_calibration
 ```
